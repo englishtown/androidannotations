@@ -21,10 +21,13 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.Set;
 
+import static com.googlecode.androidannotations.rclass.ProjectRClassFinder.RESOURCE_PACKAGE_NAME_OPTION;
+
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -318,6 +321,7 @@ import com.googlecode.androidannotations.validation.rest.RestValidator;
 		OnActivityResult.class //
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
+@SupportedOptions({RESOURCE_PACKAGE_NAME_OPTION})
 public class AndroidAnnotationProcessor extends AnnotatedAbstractProcessor {
 
 	private final TimeStats timeStats = new TimeStats();

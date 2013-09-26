@@ -25,6 +25,7 @@ import com.googlecode.androidannotations.helper.AndroidManifest;
 
 public class ProjectRClassFinder {
 
+    public static final String RESOURCE_PACKAGE_NAME_OPTION = "resourcePackageName";
 	private ProcessingEnvironment processingEnv;
 
 	public ProjectRClassFinder(ProcessingEnvironment processingEnv) {
@@ -34,7 +35,10 @@ public class ProjectRClassFinder {
 	public IRClass find(AndroidManifest manifest) {
 
 		Elements elementUtils = processingEnv.getElementUtils();
-		String rClass = manifest.getApplicationPackage() + ".R";
+
+        // This is the hack we need to support product flavors
+        String rClass = getRClassPackageName(manifest) + ".R";
+//		String rClass = manifest.getApplicationPackage() + ".R";
 		TypeElement rType = elementUtils.getTypeElement(rClass);
 
 		if (rType == null) {
@@ -45,5 +49,13 @@ public class ProjectRClassFinder {
 
 		return new RClass(rType);
 	}
+
+    public String getRClassPackageName(AndroidManifest manifest) {
+        if (processingEnv.getOptions().containsKey(RESOURCE_PACKAGE_NAME_OPTION)) {
+            return processingEnv.getOptions().get(RESOURCE_PACKAGE_NAME_OPTION);
+        } else {
+            return manifest.getApplicationPackage();
+        }
+    }
 
 }
